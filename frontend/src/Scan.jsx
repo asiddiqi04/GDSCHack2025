@@ -1,68 +1,5 @@
-// import { useState } from 'react';
-// import './App.css';
-
-// function Scan() {
-//   const [image, setImage] = useState(null);
-//   const [previewURL, setPreviewURL] = useState(null);
-
-//   const handleImageUpload = (e) => {
-//     const file = e.target.files[0];
-//     if (file) {
-//       setImage(file);
-//       setPreviewURL(URL.createObjectURL(file));
-//     }
-//   };
-
-//   const handleSubmit = () => {
-//     if (!image) return alert('Please upload an image first.');
-//     // Send `image` to your backend here using FormData
-//     console.log('Submitting image:', image);
-//   };
-
-//   return (
-//     <div className="landing-container">
-//       <nav className="navbar">
-//         <div className="logo">GreenScore 🌱</div>
-//       </nav>
-
-//       <main className="hero">
-//         <div className="hero-content">
-//           <h1>Upload Barcode Image</h1>
-//           <p>Select or take a photo of a product's barcode to begin.</p>
-
-//           <input
-//             type="file"
-//             accept="image/*"
-//             onChange={handleImageUpload}
-//             style={{ marginBottom: '1rem' }}
-//           />
-
-//           {previewURL && (
-//             <img
-//               src={previewURL}
-//               alt="Uploaded preview"
-//               style={{
-//                 maxWidth: '300px',
-//                 marginBottom: '1rem',
-//                 borderRadius: '8px',
-//                 boxShadow: '0 0 8px rgba(0,0,0,0.1)'
-//               }}
-//             />
-//           )}
-
-//           <button className="cta-button" onClick={handleSubmit}>
-//             Submit
-//           </button>
-//         </div>
-//       </main>
-//     </div>
-//   );
-// }
-
-// export default Scan;
-
-
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './App.css';
 
 function Scan() {
@@ -70,6 +7,7 @@ function Scan() {
   const canvasRef = useRef(null);
   const [stream, setStream] = useState(null);
   const [capturedImage, setCapturedImage] = useState(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
@@ -79,7 +17,7 @@ function Scan() {
         const mediaStream = await navigator.mediaDevices.getUserMedia({
           video: isMobile
             ? { facingMode: { exact: 'environment' } }
-            : true, // default webcam on desktop
+            : true,
         });
         setStream(mediaStream);
         if (videoRef.current) {
@@ -94,7 +32,6 @@ function Scan() {
     getCamera();
 
     return () => {
-      // Stop camera when leaving the page
       stream?.getTracks().forEach((track) => track.stop());
     };
   }, []);
@@ -110,6 +47,16 @@ function Scan() {
     ctx.drawImage(video, 0, 0);
     const dataURL = canvas.toDataURL('image/png');
     setCapturedImage(dataURL);
+  };
+
+  const handleSubmit = () => {
+    if (!capturedImage) {
+      alert('Please capture an image first.');
+      return;
+    }
+
+    // Future: Upload capturedImage (dataURL) to backend
+    navigate('/results');
   };
 
   return (
@@ -129,7 +76,6 @@ function Scan() {
             playsInline
             style={{ width: '100%', maxWidth: '400px', borderRadius: '10px', marginBottom: '1rem' }}
           />
-
           <canvas ref={canvasRef} style={{ display: 'none' }} />
 
           <button className="cta-button" onClick={captureImage}>
@@ -137,11 +83,20 @@ function Scan() {
           </button>
 
           {capturedImage && (
-            <img
-              src={capturedImage}
-              alt="Captured"
-              style={{ marginTop: '1rem', maxWidth: '300px', borderRadius: '8px' }}
-            />
+            <>
+              <img
+                src={capturedImage}
+                alt="Captured"
+                style={{ marginTop: '1rem', maxWidth: '300px', borderRadius: '8px' }}
+              />
+              <button
+                className="cta-button"
+                style={{ marginTop: '1rem' }}
+                onClick={handleSubmit}
+              >
+                ✅ Submit
+              </button>
+            </>
           )}
         </div>
       </main>
