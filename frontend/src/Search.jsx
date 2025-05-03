@@ -1,6 +1,8 @@
 // src/Search.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+
 
 function Search() {
   const [query, setQuery] = useState('');
@@ -13,9 +15,8 @@ function Search() {
 
   return (
     <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
-      </nav>
+    <Navbar />
+
 
       <main className="hero">
         <h1>Search for a Product</h1>

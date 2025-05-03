@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
+
 
 function Scan() {
   const videoRef = useRef(null);
@@ -60,9 +62,8 @@ function Scan() {
 
   return (
     <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
-      </nav>
+    <Navbar />
+
 
       <main className="hero">
         <div className="hero-content">

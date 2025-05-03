@@ -1,3 +1,4 @@
+import Navbar from './components/Navbar';
 
 function ScoreResults() {
   // Placeholder data
@@ -11,9 +12,8 @@ function ScoreResults() {
 
   return (
     <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
-      </nav>
+    <Navbar />
+
 
       <main className="hero">
         <div className="hero-content">

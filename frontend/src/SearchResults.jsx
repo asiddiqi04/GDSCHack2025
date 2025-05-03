@@ -1,5 +1,7 @@
 // src/SearchResults.jsx
 import { useLocation } from 'react-router-dom';
+import Navbar from './components/Navbar';
+
 
 function useQuery() {
   return new URLSearchParams(useLocation().search);
@@ -23,9 +25,8 @@ function SearchResults() {
 
   return (
     <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
-      </nav>
+    <Navbar />
+
 
       <main className="hero">
         <h1>Results for "{query}"</h1>
