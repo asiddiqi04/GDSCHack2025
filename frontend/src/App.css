@@ -9,10 +9,11 @@ body, html {
 
 /* Container */
 .landing-container {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
 
 /* Navbar */
 .navbar {
@@ -43,16 +44,17 @@ body, html {
   background-color: #276749;
 }
 
-/* Hero Section */
 .hero {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  padding: 4rem 2rem;
-}
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* vertical center */
+    align-items: center;     /* horizontal center */
+    text-align: center;
+    padding: 2rem;
+  }
+  
+  
 
 .hero h1 {
   font-size: 3rem;

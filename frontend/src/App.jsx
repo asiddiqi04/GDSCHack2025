@@ -1,3 +1,4 @@
+// src/App.jsx
 import './App.css';
 
 function App() {
@@ -9,9 +10,11 @@ function App() {
       </nav>
 
       <main className="hero">
-        <h1>Shop Smarter. Live Greener.</h1>
-        <p>Scan any product to reveal its ethical and environmental footprint.</p>
-        <button className="cta-button">Start Scanning</button>
+        <div className="hero-content">
+          <h1>Shop Smarter. Live Greener.</h1>
+          <p>Scan any product to reveal its ethical and environmental footprint.</p>
+          <button className="cta-button">Start Scanning</button>
+        </div>
       </main>
     </div>
   );
