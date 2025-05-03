@@ -1,13 +1,58 @@
-import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import SearchedItems from './components/SearchedItems';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 function SearchResults() {
   const location = useLocation();
+  const navigate = useNavigate(); 
   const query = location.state?.query || '';
 
+  
+
   const products = [
-    { name: "Organic Almond Milk", company: "GreenFarm", country: "Canada", tags: ["vegan", "organic"] },
-    { name: "Zero Sugar Cola", company: "ColaCo", country: "USA", tags: ["zero sugar", "carbonated"] }
+    {
+      name: "Organic Almond Milk",
+      company: "GreenFarm",
+      country: "Canada",
+      tags: ["vegan", "organic"],
+      image: "https://via.placeholder.com/80?text=Almond+Milk"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "SalamCola",
+      company: "Salam",
+      country: "Canada",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    }
   ];
 
   const filtered = products.filter((item) =>
@@ -17,24 +62,17 @@ function SearchResults() {
     item.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
   );
 
+  const handleSelect = (item) => {
+    navigate('/results', { state: { product: item } });
+  };
+
   return (
     <div className="min-h-screen bg-green-50 flex flex-col">
       <Navbar />
-      <main className="flex-grow flex justify-center items-start px-4 py-12">
-        <div className="w-full max-w-2xl">
+      <main className="flex-grow px-4 py-12">
+        <div className="w-full max-w-2xl mx-auto">
           <h1 className="text-2xl font-bold mb-6">Results for "{query}"</h1>
-          {filtered.length > 0 ? (
-            filtered.map((item, idx) => (
-              <div key={idx} className="bg-white rounded-lg shadow p-4 mb-4 border border-gray-200">
-                <h2 className="text-lg font-semibold">{item.name}</h2>
-                <p className="text-gray-700"><strong>Company:</strong> {item.company}</p>
-                <p className="text-gray-700"><strong>Country:</strong> {item.country}</p>
-                <p className="text-gray-700"><strong>Tags:</strong> {item.tags.join(', ')}</p>
-              </div>
-            ))
-          ) : (
-            <p className="text-gray-500">No results found.</p>
-          )}
+          <SearchedItems items={filtered} onSelect={handleSelect} />
         </div>
       </main>
     </div>

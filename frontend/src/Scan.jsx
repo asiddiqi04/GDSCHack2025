@@ -29,12 +29,16 @@ function Scan() {
       canvas.width = video.videoWidth;
       canvas.height = video.videoHeight;
       ctx.drawImage(video, 0, 0);
-      setCapturedImage(canvas.toDataURL('image/png'));
+      const imageData = canvas.toDataURL('image/png');
+      setCapturedImage(imageData);
     }
   };
 
   const handleSubmit = () => {
-    alert('Image submitted!');
+    if (capturedImage) {
+      localStorage.setItem('scannedImage', capturedImage);
+      alert('Image submitted and saved to local storage!');
+    }
   };
 
   return (
@@ -46,11 +50,15 @@ function Scan() {
           <p className="text-gray-600 mb-4">Point your camera at a barcode and capture it.</p>
           <video ref={videoRef} autoPlay playsInline className="w-full rounded-md border border-gray-300 mb-4" />
           <canvas ref={canvasRef} style={{ display: 'none' }} />
-          <button onClick={captureImage} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded">📸 Capture</button>
+          <button onClick={captureImage} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded mb-4">
+            📸 Capture
+          </button>
           {capturedImage && (
             <>
               <img src={capturedImage} alt="Captured" className="mt-4 rounded-md w-full max-w-xs mx-auto" />
-              <button onClick={handleSubmit} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded mt-4">✅ Submit</button>
+              <button onClick={handleSubmit} className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded mt-4 mb-4">
+                ✅ Submit
+              </button>
             </>
           )}
         </div>
