@@ -1,0 +1,17 @@
+# Python artifacts
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment
+.env
+
+# Firebase
+creds.json
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store

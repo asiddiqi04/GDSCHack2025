@@ -1,0 +1,5 @@
+"pymongo[srv]"
+"fastapi[standard]"
+SQLAlchemy
+beanie 
+motor
