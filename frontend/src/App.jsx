@@ -2,6 +2,7 @@
 import { Routes, Route, useNavigate } from 'react-router-dom';
 import './App.css';
 import Scan from './Scan';
+// import Search from './Search'
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -64,13 +65,13 @@ function ScanOrSearch() {
 //   );
 // }
 
-// function Search() {
-//   return (
-//     <div className="landing-container">
-//       <h1 style={{ padding: '2rem' }}>Search Page</h1>
-//     </div>
-//   );
-// }
+function Search() {
+  return (
+    <div className="landing-container">
+      <h1 style={{ padding: '2rem' }}>Search Page</h1>
+    </div>
+  );
+}
 
 export default function App() {
   return (
