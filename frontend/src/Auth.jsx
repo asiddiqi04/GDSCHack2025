@@ -1,7 +1,6 @@
 // src/Auth.jsx
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
-import './App.css';
 
 function Auth() {
   const navigate = useNavigate();
@@ -17,12 +16,12 @@ function Auth() {
   };
 
   return (
-    <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
+    <div >
+      <nav >
+        <div >GreenScore 🌱</div>
       </nav>
 
-      <main className="hero">
+      <main >
         <h1>{mode === 'login' ? 'Log In' : 'Sign Up'}</h1>
         <form onSubmit={handleAuth} style={{ textAlign: 'center' }}>
           <input
@@ -43,7 +42,7 @@ function Auth() {
             style={{ marginBottom: '1rem', padding: '0.8rem', width: '100%', maxWidth: '300px' }}
           />
           <br />
-          <button className="cta-button" type="submit">
+          <button  type="submit">
             {mode === 'login' ? 'Log In' : 'Sign Up'}
           </button>
         </form>

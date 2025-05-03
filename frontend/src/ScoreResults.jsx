@@ -1,4 +1,3 @@
-import './App.css';
 
 function ScoreResults() {
   // Placeholder data

@@ -1,6 +1,4 @@
-// src/App.jsx
 import { Routes, Route, useNavigate } from 'react-router-dom';
-import './App.css';
 import Scan from './Scan';
 import Search from './Search';
 import SearchResults from './SearchResults';
@@ -12,19 +10,29 @@ function LandingPage() {
   const navigate = useNavigate();
 
   return (
-    <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
-        <button className="nav-button" onClick={() => navigate('/auth')}>
+    <div className="min-h-screen bg-green-50 flex flex-col">
+      <nav className="flex justify-between items-center p-4 bg-white shadow-md">
+        <div className="text-xl font-bold text-green-700">GreenScore 🌱</div>
+        <button
+          className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
+          onClick={() => navigate('/auth')}
+        >
           Get Started
         </button>
       </nav>
 
-      <main className="hero">
-        <div className="hero-content">
-          <h1>Shop Smarter. Live Greener.</h1>
-          <p>Scan any product to reveal its ethical and environmental footprint.</p>
-          <button className="cta-button" onClick={() => navigate('/auth')}>
+      <main className="flex-grow flex items-center justify-center px-4 text-center">
+        <div className="max-w-xl">
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            Shop Smarter. Live Greener.
+          </h1>
+          <p className="text-gray-600 mb-6">
+            Scan any product to reveal its ethical and environmental footprint.
+          </p>
+          <button
+            className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded shadow"
+            onClick={() => navigate('/auth')}
+          >
             Start Scanning
           </button>
         </div>

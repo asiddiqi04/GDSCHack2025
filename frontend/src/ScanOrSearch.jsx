@@ -1,5 +1,4 @@
 import { useNavigate } from 'react-router-dom';
-import './App.css'; // Reuse existing styling
 
 function ScanOrSearch() {
   const navigate = useNavigate();
