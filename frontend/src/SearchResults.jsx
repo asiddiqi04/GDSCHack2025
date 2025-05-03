@@ -1,47 +1,39 @@
-// src/SearchResults.jsx
 import { useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar';
 
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
-
 function SearchResults() {
-  const query = useQuery().get('q')?.toLowerCase() || '';
+  const location = useLocation();
+  const query = location.state?.query || '';
 
-  const dummyData = [
-    { name: 'Nestlé Water', country: 'Canada', company: 'Nestlé', tags: ['zero sugar'] },
-    { name: 'Gluten-Free Cookies', country: 'USA', company: 'Nature’s Best', tags: ['gluten free'] },
-    { name: 'Organic Juice', country: 'Canada', company: 'GreenCo', tags: ['sugar free', 'organic'] },
+  const products = [
+    { name: "Organic Almond Milk", company: "GreenFarm", country: "Canada", tags: ["vegan", "organic"] },
+    { name: "Zero Sugar Cola", company: "ColaCo", country: "USA", tags: ["zero sugar", "carbonated"] }
   ];
 
-  const filtered = dummyData.filter(item =>
-    item.name.toLowerCase().includes(query) ||
-    item.country.toLowerCase().includes(query) ||
-    item.company.toLowerCase().includes(query) ||
-    item.tags.some(tag => tag.toLowerCase().includes(query))
+  const filtered = products.filter((item) =>
+    item.name.toLowerCase().includes(query.toLowerCase()) ||
+    item.company.toLowerCase().includes(query.toLowerCase()) ||
+    item.country.toLowerCase().includes(query.toLowerCase()) ||
+    item.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
   );
 
   return (
-    <div className="landing-container">
-    <Navbar />
-
-
-      <main className="hero">
-        <h1>Results for "{query}"</h1>
-        <div style={{ width: '100%', maxWidth: '600px' }}>
+    <div className="min-h-screen bg-green-50 flex flex-col">
+      <Navbar />
+      <main className="flex-grow flex justify-center items-start px-4 py-12">
+        <div className="w-full max-w-2xl">
+          <h1 className="text-2xl font-bold mb-6">Results for "{query}"</h1>
           {filtered.length > 0 ? (
             filtered.map((item, idx) => (
-              <div key={idx} style={{ margin: '1rem 0', padding: '1rem', background: '#fff', borderRadius: '8px', boxShadow: '0 0 6px rgba(0,0,0,0.1)' }}>
-                <h2>{item.name}</h2>
-                <p><strong>Company:</strong> {item.company}</p>
-                <p><strong>Country:</strong> {item.country}</p>
-                <p><strong>Tags:</strong> {item.tags.join(', ')}</p>
+              <div key={idx} className="bg-white rounded-lg shadow p-4 mb-4 border border-gray-200">
+                <h2 className="text-lg font-semibold">{item.name}</h2>
+                <p className="text-gray-700"><strong>Company:</strong> {item.company}</p>
+                <p className="text-gray-700"><strong>Country:</strong> {item.country}</p>
+                <p className="text-gray-700"><strong>Tags:</strong> {item.tags.join(', ')}</p>
               </div>
             ))
           ) : (
-            <p>No results found.</p>
+            <p className="text-gray-500">No results found.</p>
           )}
         </div>
       </main>
