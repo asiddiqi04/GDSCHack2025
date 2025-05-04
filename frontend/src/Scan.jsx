@@ -2,6 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import axios from 'axios';
+import { CameraIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
 
 function Scan() {
   const videoRef = useRef(null);
@@ -11,7 +12,13 @@ function Scan() {
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
+
   useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/auth');
+    }
+
     const getCameraStream = async () => {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -23,7 +30,7 @@ function Scan() {
       }
     };
     getCameraStream();
-  }, []);
+  }, [navigate]);
 
   const captureImage = () => {
     const video = videoRef.current;
@@ -88,16 +95,18 @@ function Scan() {
     <div className="min-h-screen bg-green-50 flex flex-col">
       <Navbar />
       <main className="flex-grow flex justify-center items-center px-4 py-12">
-        <div className="bg-white p-6 rounded-xl shadow-md w-full max-w-lg text-center">
+        <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-lg text-center">
           <h1 className="text-2xl font-bold mb-2">Scan a Product</h1>
           <p className="text-gray-600 mb-4">Point your camera at a barcode and capture it.</p>
           <video ref={videoRef} autoPlay playsInline className="w-full rounded-md border border-gray-300 mb-4" />
           <canvas ref={canvasRef} style={{ display: 'none' }} />
+
           <button
             onClick={captureImage}
-            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded mb-4"
+            className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-white border border-green-600 text-green-700 font-medium rounded-lg shadow-sm hover:bg-green-100 hover:text-green-800 transition-all"
           >
-            📸 Capture
+            <CameraIcon className="w-5 h-5" />
+            Capture
           </button>
 
           {capturedImage && (
@@ -106,9 +115,14 @@ function Scan() {
               <button
                 onClick={handleSubmit}
                 disabled={loading}
-                className={`w-full ${loading ? 'bg-gray-400' : 'bg-green-600 hover:bg-green-700'} text-white font-semibold py-2 rounded mt-4 mb-4 transition`}
+                className={`mt-4 w-full flex items-center justify-center gap-2 px-5 py-3 rounded-lg shadow-sm transition-all ${
+                  loading
+                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                    : 'bg-white border border-green-600 text-green-700 hover:bg-green-100 hover:text-green-800'
+                }`}
               >
-                {loading ? '⏳ Submitting...' : '✅ Submit'}
+                <CheckCircleIcon className="w-5 h-5" />
+                {loading ? 'Submitting...' : 'Submit'}
               </button>
               {message && <p className="mt-2 text-sm text-gray-700">{message}</p>}
             </>

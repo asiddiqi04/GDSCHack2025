@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import axios from 'axios';
+import { MagnifyingGlassIcon } from '@heroicons/react/24/outline';
 
 function Search() {
   const [query, setQuery] = useState('');
@@ -52,14 +53,14 @@ function Search() {
       navigate('/results', { state: { evaluation: res.data.evaluation } });
     } catch (err) {
       console.error(err);
-      alert("Evaluation failed");
+      alert('Evaluation failed');
     }
   };
 
   return (
     <div className="min-h-screen bg-green-50 flex flex-col">
       <Navbar />
-      <main className="flex-grow flex flex-col items-center px-4 py-12">
+      <main className="flex-grow flex justify-center items-center px-4 py-12">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
           <h1 className="text-2xl font-bold mb-6">Search for a Product</h1>
           <form onSubmit={handleSubmit} className="space-y-4">
@@ -68,17 +69,16 @@ function Search() {
               placeholder="e.g., zero sugar, Canada, Nestlé"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-md"
+              className="w-full p-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-green-400"
             />
             <button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
+              className="w-full flex items-center justify-center gap-2 px-5 py-3 bg-white border border-green-600 text-green-700 font-medium rounded-lg shadow-sm hover:bg-green-100 hover:text-green-800 transition-all"
             >
-              🔍 Search
+              <MagnifyingGlassIcon className="w-5 h-5" />
+              {loading ? 'Searching...' : 'Search'}
             </button>
           </form>
-
-          {loading && <p className="mt-4 text-gray-500">Loading...</p>}
 
           {results.length > 0 && (
             <ul className="mt-6 space-y-4 text-left">

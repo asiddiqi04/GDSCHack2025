@@ -7,13 +7,14 @@ import ScoreResults from './ScoreResults';
 import Auth from './Auth';
 import Favourites from './Favourites';
 import History from './History';
+import Navbar from './components/Navbar';
 
 function LandingPage() {
   const navigate = useNavigate();
 
   return (
     <div className="min-h-screen bg-green-50 flex flex-col">
-      <nav className="flex justify-between items-center p-4 bg-white shadow-md">
+      {/* <nav className="flex justify-between items-center p-4 bg-white shadow-md">
         <div className="text-xl font-bold text-green-700">GreenScore 🌱</div>
         <button
           className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded"
@@ -21,7 +22,8 @@ function LandingPage() {
         >
           Get Started
         </button>
-      </nav>
+      </nav> */}
+      <Navbar/>
 
       <main className="flex-grow flex items-center justify-center px-4 text-center">
         <div className="max-w-xl">

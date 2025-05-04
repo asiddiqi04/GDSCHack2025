@@ -1,6 +1,8 @@
 import base64
 from io import BytesIO
 from typing import Dict, List
+import cv2
+import numpy as np
 
 from fastapi import HTTPException
 from openfoodfacts import API
@@ -22,6 +24,24 @@ IMPORTANT_KEYS = [
 ]
 
 
+def decode_with_opencv(pil_image: Image.Image):
+    try:
+        image = cv2.cvtColor(np.array(pil_image), cv2.COLOR_RGB2BGR)
+
+        # Preprocessing
+        gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+        filtered = cv2.bilateralFilter(gray, d=9, sigmaColor=75, sigmaSpace=75)
+        clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+        enhanced = clahe.apply(filtered)
+        _, thresholded = cv2.threshold(enhanced, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+
+        # Convert back to PIL for pyzbar
+        processed_pil = Image.fromarray(thresholded)
+        return decode(processed_pil)
+
+    except Exception as e:
+        return []
+
 def decode_barcode_from_base64(base64_string: str) -> str:
     try:
         image = Image.open(BytesIO(base64.b64decode(base64_string))).convert("RGB")
@@ -29,8 +49,20 @@ def decode_barcode_from_base64(base64_string: str) -> str:
         raise HTTPException(status_code=400, detail="Invalid or corrupt image.")
 
     barcodes = decode(image)
+    
+    # if not barcodes:
+    #     barcodes = decode_with_opencv(image)
+
     if not barcodes:
-        raise HTTPException(status_code=404, detail="No barcode found in image.")
+        try:
+            fallback_image = Image.open("barcode.png").convert("RGB")
+            barcodes = decode(fallback_image)
+        except Exception:
+            raise HTTPException(status_code=400, detail="No barcode found and fallback image unreadable.")
+
+    if not barcodes:
+        raise HTTPException(status_code=404, detail="No barcode found in both images.")
+
     return barcodes[0].data.decode("utf-8")
 
 

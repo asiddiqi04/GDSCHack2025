@@ -5,7 +5,6 @@ from dotenv import load_dotenv
 import os
 load_dotenv()
 MONGOURI = os.getenv("MONGOURI")
-print(MONGOURI)
 client = AsyncIOMotorClient(MONGOURI)
 
 db = client["greenscore"]

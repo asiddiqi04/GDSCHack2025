@@ -9,7 +9,9 @@ function History() {
   const token = localStorage.getItem('token');
 
   useEffect(() => {
-    if (!token) return;
+    if (!token) {
+      navigate("/auth");
+    }
 
     axios
       .get('http://localhost:8002/products', {
@@ -23,7 +25,7 @@ function History() {
       .catch((err) => {
         console.error('Failed to fetch history:', err);
       });
-  }, [token]);
+  }, [token,navigate]);
 
   const handleSelect = (product) => {
     navigate('/results', { state: { evaluation: product } });
