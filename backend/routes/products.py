@@ -1,9 +1,8 @@
-
 from fastapi import APIRouter, Depends
-from auth import verify_token
 from models import Product
 from schemas import ProductCreate, ProductResponse
-
+from typing import List
+from auth import verify_token
 
 router = APIRouter()
 
@@ -15,10 +14,11 @@ async def create_product(
     new_product = Product(**product.dict())
     await new_product.insert()
 
-    return ProductResponse(
-        id=str(new_product.id),
-        name=new_product.name,
-        company=new_product.company,
-        desc=new_product.desc,
-        score=new_product.score
-    )
+    # Return it manually to convert ObjectId to str if needed
+    return ProductResponse(**new_product.dict())
+
+
+@router.get("/products", response_model=List[ProductResponse])
+async def get_latest_products():
+    products = await Product.find_all().sort("-_id").limit(10).to_list()
+    return [ProductResponse(**p.dict()) for p in products]

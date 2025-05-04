@@ -2,12 +2,6 @@ from fastapi import APIRouter, Depends, HTTPException
 from beanie import PydanticObjectId
 from auth import verify_token
 from models import User, Product
-
-router = APIRouter()
-
-from fastapi import APIRouter, Depends, HTTPException
-from auth import verify_token
-from models import User, Product
 from schemas import ProductCreate, ProductResponse
 from typing import List
 
@@ -20,7 +14,11 @@ async def add_to_favourites(product: ProductCreate, token_data=Depends(verify_to
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    existing = await Product.find_one(Product.name == product.name, Product.company == product.company)
+    # Use product_name + brand as a unique combo
+    existing = await Product.find_one(
+        Product.product_name == product.product_name,
+        Product.brand == product.brand
+    )
 
     if not existing:
         existing = Product(**product.dict())
@@ -30,16 +28,10 @@ async def add_to_favourites(product: ProductCreate, token_data=Depends(verify_to
         user.favourites.append(existing)
         await user.save()
 
-    return ProductResponse(
-        id=str(existing.id),
-        name=existing.name,
-        company=existing.company,
-        desc=existing.desc,
-        score=existing.score
-    )
+    return ProductResponse(**existing.dict())
 
-  
-@router.get("/favourites")
+
+@router.get("/favourites", response_model=List[ProductResponse])
 async def get_favourites(token_data=Depends(verify_token)):
     uid = token_data["uid"]
     user = await User.find_one(User.uid == uid)
@@ -49,13 +41,6 @@ async def get_favourites(token_data=Depends(verify_token)):
     await user.fetch_link(User.favourites)
 
     return [
-        {
-            "id": str(product.id),
-            "name": product.name,
-            "company": product.company,
-            "desc": product.desc,
-            "score": product.score
-        }
+        ProductResponse(**product.dict())
         for product in user.favourites
     ]
-

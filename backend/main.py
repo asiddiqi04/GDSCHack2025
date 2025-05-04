@@ -7,6 +7,7 @@ import uvicorn
 from routes.user import router as user_router
 from routes.favourites import router as favourites_router
 from routes.products import router as products_router
+from routes.search import router as search_router
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -22,7 +23,9 @@ app.include_router(favourites_router, prefix="/users", tags=["Favourites"])
 
 app.include_router(products_router, prefix="")
 
+app.include_router(search_router, prefix="/search")
+
 
 if __name__ == "__main__":
     print("hello")
-    uvicorn.run("main:app", host="127.0.0.1", port=8001, reload=True)
+    uvicorn.run("main:app", host="127.0.0.1", port=8002, reload=True)

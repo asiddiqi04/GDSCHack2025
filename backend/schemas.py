@@ -1,14 +1,25 @@
 from pydantic import BaseModel, EmailStr
-from typing import List
+from typing import List, Optional
+from beanie import Document, Link
+from models import Scores, Product
 
 class ProductCreate(BaseModel):
-    name: str
-    company: str
-    desc: str
-    score: int
+    product_name: str
+    brand: str
+    pros: List[str]
+    cons: List[str]
+    scores: Scores
+    notes: List[str]
+    similar_products: List[str]
 
 class ProductResponse(ProductCreate):
-    id: str
+    product_name: str
+    brand: str
+    pros: List[str]
+    cons: List[str]
+    scores: Scores
+    notes: List[str]
+    similar_products: List[str]
 
 class UserCreate(BaseModel):
     uid: str
@@ -19,3 +30,32 @@ class UserResponse(BaseModel):
     uid: str
     email: EmailStr
     favourites: List[ProductResponse] = []
+
+  
+class ImageRequest(BaseModel):
+    image_base64: str
+
+class ChatBotRequest(BaseModel):
+  favourites: List[Link[Product]] = []
+  message: str
+  
+class ChatBotResponse(BaseModel):
+  message: str
+    
+class SearchRequest(BaseModel):
+    product_name: Optional[str] = None
+    brand: Optional[str] = None
+    country: Optional[str] = None
+    descriptors: Optional[str] = None
+    page: Optional[int] = 1
+    page_size: Optional[int] = 10
+
+class EvaluationRequest(BaseModel):
+    product_name: str
+    brands: str
+    ingredients_text: Optional[str]
+    allergens: Optional[str]
+    ecoscore_grade: Optional[str]
+    packaging_materials_tags: Optional[List[str]] = []
+    packaging_recycling_tags: Optional[List[str]] = []
+    nova_groups_tags: Optional[List[str]] = []
