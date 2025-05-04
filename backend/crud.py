@@ -1,17 +1,12 @@
 import base64
-import os
 from io import BytesIO
-from typing import Dict, List, Optional
-import google.generativeai as genai
-from dotenv import load_dotenv
-from fastapi import FastAPI, HTTPException
-from fastapi.responses import JSONResponse
+from typing import Dict, List
+
+from fastapi import HTTPException
 from openfoodfacts import API
 from PIL import Image
-from prompt import parse_ai_output, return_prompt
-from pydantic import BaseModel
-from schemas import SearchRequest
 from pyzbar.pyzbar import decode
+from schemas import SearchRequest
 
 api = API(user_agent="GreenScoreApp/1.0")
 

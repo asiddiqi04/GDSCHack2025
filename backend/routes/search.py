@@ -6,10 +6,9 @@ from crud import (
     build_search_query,
     decode_barcode_from_base64,
     query_product_by_barcode,
-    return_prompt,
     format_product,
-    parse_ai_output
 )
+from prompt import return_prompt, parse_ai_output
 from fastapi import APIRouter
 from openfoodfacts import API
 from client import gemini_model
