@@ -36,7 +36,6 @@ class ImageRequest(BaseModel):
     image_base64: str
 
 class ChatBotRequest(BaseModel):
-  favourites: List[Link[Product]] = []
   message: str
   
 class ChatBotResponse(BaseModel):

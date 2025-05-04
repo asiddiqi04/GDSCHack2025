@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
+import axios from 'axios';
 
 function Auth() {
   const navigate = useNavigate();
@@ -8,11 +9,40 @@ function Auth() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleAuth = (e) => {
+  const handleAuth = async (e) => {
     e.preventDefault();
-    // Simulate login/signup logic
-    navigate('/options');
+  
+    const data = {
+      email,
+      password,
+    };
+  
+    const endpoint =
+      mode === 'login'
+        ? 'http://localhost:8002/auth/login'
+        : 'http://localhost:8002/auth/signup';
+  
+    try {
+      const response = await axios.post(endpoint, data);
+  
+      if (mode === 'login') {
+        const token = response.data?.token || response.data?.idToken;
+        if (token) {
+          localStorage.setItem('token', token);
+          localStorage.setItem('user', JSON.stringify(response.data));
+        }
+        navigate('/options');
+      } else {
+        setMode('login');
+        window.location.reload();
+      }
+      
+    } catch (err) {
+      console.error('Auth failed:', err.response?.data || err.message);
+      alert(err.response?.data?.detail || 'Something went wrong');
+    }
   };
+  
 
   return (
     <div className="min-h-screen bg-green-50 flex flex-col">
