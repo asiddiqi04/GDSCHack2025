@@ -14,6 +14,9 @@ from openfoodfacts import API
 from client import gemini_model
 from auth import verify_token
 from client import gemini_model
+import requests
+from urllib.parse import quote
+
 
 api = API(user_agent="GreenScoreApp/1.0")
 router = APIRouter()
@@ -36,6 +39,8 @@ def scan_barcode(req: ImageRequest, token_data=Depends(verify_token)):
     product = query_product_by_barcode(barcode)
     return {"query": barcode, "results": [format_product(product)]}
 
+
+
 @router.post("/search_products")
 def search_products(req: SearchRequest, token_data=Depends(verify_token)):
     query = build_search_query(req)
@@ -43,15 +48,32 @@ def search_products(req: SearchRequest, token_data=Depends(verify_token)):
         raise HTTPException(status_code=400, detail="At least one search field is required.")
 
     try:
-        result = api.product.text_search(query=query, page=req.page, page_size=req.page_size)
-    except Exception:
-        raise HTTPException(status_code=500, detail="OpenFoodFacts search failed.")
+        url = "https://world.openfoodfacts.org/cgi/search.pl"
+        params = {
+            "search_terms": quote(query),
+            "search_simple": 1,
+            "action": "process",
+            "json": 1,
+            "page": req.page or 1,
+            "page_size": req.page_size or 10,
+        }
+        headers = {
+            "User-Agent": "GreenScoreApp/1.0"
+        }
 
-    products = result.get("products", [])
-    if not products:
-        raise HTTPException(status_code=404, detail="No matching products found.")
+        response = requests.get(url, params=params, headers=headers)
+        if response.status_code != 200:
+            raise HTTPException(status_code=500, detail="OpenFoodFacts search request failed.")
 
-    return {"query": query, "results": [format_product(p) for p in products]}
+        result = response.json()
+        products = result.get("products", [])
+        if not products:
+            raise HTTPException(status_code=404, detail="No matching products found.")
+
+        return {"query": query, "results": [format_product(p) for p in products]}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"OpenFoodFacts search failed: {str(e)}")
+
 
 
 @router.post("/evaluate_product")
