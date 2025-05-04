@@ -1,20 +1,11 @@
-from schemas import ImageRequest, SearchRequest, EvaluationRequest
-from fastapi import HTTPException, Depends
-from models import Product, Scores
-from fastapi.responses import JSONResponse
-from crud import (
-    build_search_query,
-    decode_barcode_from_base64,
-    query_product_by_barcode,
-    return_prompt,
-    format_product,
-    parse_ai_output
-)
-from fastapi import APIRouter
-from openfoodfacts import API
-from client import gemini_model
 from auth import verify_token
 from client import gemini_model
+from crud import build_search_query, decode_barcode_from_base64, format_product, parse_ai_output, query_product_by_barcode, return_prompt
+from fastapi import APIRouter, Depends, HTTPException
+from fastapi.responses import JSONResponse
+from models import Product, Scores
+from openfoodfacts import API
+from schemas import EvaluationRequest, ImageRequest, SearchRequest
 
 api = API(user_agent="GreenScoreApp/1.0")
 router = APIRouter()

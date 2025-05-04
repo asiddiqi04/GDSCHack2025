@@ -1,7 +1,9 @@
-from pydantic import BaseModel, EmailStr
 from typing import List, Optional
+
 from beanie import Document, Link
-from models import Scores, Product
+from models import Product, Scores
+from pydantic import BaseModel, EmailStr
+
 
 class ProductCreate(BaseModel):
     product_name: str
@@ -36,7 +38,6 @@ class ImageRequest(BaseModel):
     image_base64: str
 
 class ChatBotRequest(BaseModel):
-  favourites: List[Link[Product]] = []
   message: str
   
 class ChatBotResponse(BaseModel):
