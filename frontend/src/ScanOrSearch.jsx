@@ -1,26 +1,39 @@
 import { useNavigate } from 'react-router-dom';
+import Navbar from './components/Navbar';
 
 function ScanOrSearch() {
   const navigate = useNavigate();
 
   return (
-    <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
-      </nav>
-
-      <main className="hero">
-        <div className="hero-content">
-          <h1>How would you like to get started?</h1>
-          <p>You can either scan a barcode or search for a product manually.</p>
-
-          <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-            <button className="cta-button" onClick={() => navigate('/scan')}>
+    <div className="min-h-screen bg-green-50 flex flex-col">
+      <Navbar />
+      <main className="flex-grow flex justify-center items-center px-4 py-12">
+        <div className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md text-center">
+          <h1 className="text-2xl font-bold mb-4">How would you like to get started?</h1>
+          <p className="text-gray-600 mb-6">
+            You can either scan a barcode, search for a product, or view your favourites.
+          </p>
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={() => navigate('/scan')}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
+            >
               📷 Scan Product
             </button>
-            <button className="cta-button" onClick={() => navigate('/search')}>
-              🔍 Search Product
-            </button>
+            <button
+            onClick={() => navigate('/search')}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
+          >
+            🔍 Search Product
+          </button>
+          
+          <button
+            onClick={() => navigate('/favourites')}
+            className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded"
+          >
+            ❤️ Favourites
+          </button>
+          
           </div>
         </div>
       </main>

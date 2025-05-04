@@ -1,47 +1,78 @@
-// src/SearchResults.jsx
-import { useLocation } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import SearchedItems from './components/SearchedItems';
+import { useLocation, useNavigate } from 'react-router-dom';
 
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
-}
 
 function SearchResults() {
-  const query = useQuery().get('q')?.toLowerCase() || '';
+  const location = useLocation();
+  const navigate = useNavigate(); 
+  const query = location.state?.query || '';
 
-  const dummyData = [
-    { name: 'Nestlé Water', country: 'Canada', company: 'Nestlé', tags: ['zero sugar'] },
-    { name: 'Gluten-Free Cookies', country: 'USA', company: 'Nature’s Best', tags: ['gluten free'] },
-    { name: 'Organic Juice', country: 'Canada', company: 'GreenCo', tags: ['sugar free', 'organic'] },
+  
+
+  const products = [
+    {
+      name: "Organic Almond Milk",
+      company: "GreenFarm",
+      country: "Canada",
+      tags: ["vegan", "organic"],
+      image: "https://via.placeholder.com/80?text=Almond+Milk"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "SalamCola",
+      company: "Salam",
+      country: "Canada",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    },
+    {
+      name: "Zero Sugar Cola",
+      company: "ColaCo",
+      country: "USA",
+      tags: ["zero sugar", "carbonated"],
+      image: "https://via.placeholder.com/80?text=Cola"
+    }
   ];
 
-  const filtered = dummyData.filter(item =>
-    item.name.toLowerCase().includes(query) ||
-    item.country.toLowerCase().includes(query) ||
-    item.company.toLowerCase().includes(query) ||
-    item.tags.some(tag => tag.toLowerCase().includes(query))
+  const filtered = products.filter((item) =>
+    item.name.toLowerCase().includes(query.toLowerCase()) ||
+    item.company.toLowerCase().includes(query.toLowerCase()) ||
+    item.country.toLowerCase().includes(query.toLowerCase()) ||
+    item.tags.some(tag => tag.toLowerCase().includes(query.toLowerCase()))
   );
 
-  return (
-    <div className="landing-container">
-      <nav className="navbar">
-        <div className="logo">GreenScore 🌱</div>
-      </nav>
+  const handleSelect = (item) => {
+    navigate('/results', { state: { product: item } });
+  };
 
-      <main className="hero">
-        <h1>Results for "{query}"</h1>
-        <div style={{ width: '100%', maxWidth: '600px' }}>
-          {filtered.length > 0 ? (
-            filtered.map((item, idx) => (
-              <div key={idx} style={{ margin: '1rem 0', padding: '1rem', background: '#fff', borderRadius: '8px', boxShadow: '0 0 6px rgba(0,0,0,0.1)' }}>
-                <h2>{item.name}</h2>
-                <p><strong>Company:</strong> {item.company}</p>
-                <p><strong>Country:</strong> {item.country}</p>
-                <p><strong>Tags:</strong> {item.tags.join(', ')}</p>
-              </div>
-            ))
-          ) : (
-            <p>No results found.</p>
-          )}
+  return (
+    <div className="min-h-screen bg-green-50 flex flex-col">
+      <Navbar />
+      <main className="flex-grow px-4 py-12">
+        <div className="w-full max-w-2xl mx-auto">
+          <h1 className="text-2xl font-bold mb-6">Results for "{query}"</h1>
+          <SearchedItems items={filtered} onSelect={handleSelect} />
         </div>
       </main>
     </div>

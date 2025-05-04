@@ -5,6 +5,8 @@ import SearchResults from './SearchResults';
 import ScanOrSearch from './ScanOrSearch';
 import ScoreResults from './ScoreResults';
 import Auth from './Auth';
+import Favourites from './Favourites';
+
 
 function LandingPage() {
   const navigate = useNavigate();
@@ -51,6 +53,7 @@ export default function App() {
       <Route path="/search" element={<Search />} />
       <Route path="/search-results" element={<SearchResults />} />
       <Route path="/results" element={<ScoreResults />} />
+      <Route path="/favourites" element={<Favourites />} />
     </Routes>
   );
 }
