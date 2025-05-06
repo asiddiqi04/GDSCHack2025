@@ -96,3 +96,5 @@ Product scores are generated via **Gemini AI**, using structured prompts that ma
 
 Made with purpose at GDG HACKS 2025 — 32 hours of caffeine, code, and climate-conscious energy 🌍💚
 
+Contributors: Rehan Siddiqi, Yousuf Mohiuddin, Muzammil Zaman, and Adil Siddiqi
+
